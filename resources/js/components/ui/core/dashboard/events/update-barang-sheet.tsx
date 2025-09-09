@@ -51,11 +51,11 @@ export function UpdateBarangSheet({ task, ...props }: UpdateTaskSheetProps) {
     defaultValues: {
 
     nama: task?.nama,
-    image:  task?.image,
+    gambar:  task?.gambar,
     deskripsi: task?.deskripsi,
     quantity: task?.quantity,
 
-
+    lab: task?.lab,
     status: task?.status,
     },
     resolver: zodResolver(barangSchema),
@@ -68,11 +68,11 @@ console.log(task)
     if (task) {
       form.reset({
         nama: task?.nama,
-        image:  task?.image,
+        gambar:  task?.gambar,
         deskripsi: task?.deskripsi,
         quantity: task?.quantity,
     
-    
+        lab: task?.lab,
         status: task?.status,
       });
     }
@@ -179,7 +179,7 @@ console.log(task)
       <Sheet {...props} modal={true}>
         <SheetContent className="flex flex-col gap-6 overflow-y-scroll">
            <SheetHeader className="text-left sm:px-7 space-y-1 bg-background  z-50 sticky top-0   p-4 border-b  ">
-                   <SheetTitle className=" text-lg">Update<Button type="button"   variant={"outline"} className=" ml-2  px-2.5 text-base">{task?.title}</Button> </SheetTitle>
+                   <SheetTitle className=" text-lg">Update<Button type="button"   variant={"outline"} className=" ml-2  px-2.5 text-base">{task?.nama}</Button> </SheetTitle>
                    <SheetDescription className=" sr-only">
                      Fill in the details below to update the task
                    </SheetDescription>
@@ -207,7 +207,7 @@ console.log(task)
       <Drawer  {...props} modal={true}>
   <DrawerContent className="flex flex-col  ">
     <DrawerHeader className="text-left sm:px-7 z-50  space-y-1 bg-background    p-4 border-b  ">
-    <DrawerTitle className=" text-xl">Update<Button type="button"   variant={"outline"} className=" ml-2  px-2.5 text-base">{task?.title}</Button> </DrawerTitle>
+    <DrawerTitle className=" text-xl">Update<Button type="button"   variant={"outline"} className=" ml-2  px-2.5 text-base">{task?.nama}</Button> </DrawerTitle>
           <DrawerDescription className=" text-sm">
                      Fill in the details below to update the task
                    </DrawerDescription>

@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/fragments/table"
 import { BarangsSchema } from "@/lib/validations/validations"
-import { Calendar, CircleCheck, CircleXIcon, EllipsisIcon, Eye, EyeOff, User2Icon, Users2Icon, XIcon } from "lucide-react"
+import { Calendar, CircleCheck, CircleXIcon, DoorOpen, EllipsisIcon, Eye, EyeOff, User2Icon, Users2Icon, XIcon } from "lucide-react"
 
 import {
   DropdownMenu,
@@ -372,6 +372,7 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
             <>
           <TableHead className=" ">Title</TableHead>
 
+          <TableHead>Lab</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Quantity</TableHead>
        
@@ -411,6 +412,17 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
  
             
 
+        
+          <TableCell>
+            
+          <Badge variant="outline" className="py-1 [&>svg]:size-3.5">
+     
+              <DoorOpen/>
+           
+          
+            <span className="capitalize ">{event.lab}</span>
+         
+          </Badge></TableCell>
         
           <TableCell>
             
