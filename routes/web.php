@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\OverviewController;
-use App\Http\Controllers\PaketController;
+use App\Http\Controllers\BarangController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,8 +17,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('/', OverviewController::class);
         
         // Elections routes
-        Route::resource('paket', PaketController::class);
-       
+        Route::resource('barang', BarangController::class);
+        Route::post('/barang/{barang}/status', [BarangController::class, 'statusUpdate'])->name('barang.status');
     });
 
 

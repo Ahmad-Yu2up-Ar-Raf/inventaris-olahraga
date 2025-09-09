@@ -15,6 +15,31 @@ export interface NavGroup {
     items: NavItem[];
 }
 
+
+
+export interface Filters {
+    search?: string;
+    
+    status?: string[] | string;
+    [key: string]: unknown;
+}
+
+
+
+export interface PaginatedData {
+    data:  EventsSchema[];
+    currentPage: number;
+    lastPage: number;
+    perPage: number;
+    total: number;
+    links: {
+        url: string | null;
+        label: string;
+        active: boolean;
+    }[];
+}
+
+
 export interface NavItem {
     title: string;
     href: string;

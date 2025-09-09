@@ -62,8 +62,8 @@ import { usePage } from "@inertiajs/react";
         isActive: false,
       },
       {
-        title: "Mess",
-        url: "/dashboard/paket",
+        title: "Barang",
+        url: "/dashboard/barang",
         icon: Store,
         isActive: false,
       },
