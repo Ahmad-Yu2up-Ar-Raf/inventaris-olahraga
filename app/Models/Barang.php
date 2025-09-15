@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\BarangStatus;
+use App\Enums\VisibilityEnums;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,17 +21,16 @@ class Barang extends Model
         'status',
         'quantity',
         'gambar',
-        'lab',
         
     ];
 
     protected $casts = [
         'nama' => 'string',
         'gambar' => 'string',
-        'lab' => 'string',
         'deskripsi' => 'string',
         'quantity' => 'integer',
         'status' => BarangStatus::class,
+        'visibility' => VisibilityEnums::class,
      
     ];
 
@@ -42,16 +42,5 @@ class Barang extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Relasi ke Orders
-     */
-    // public function orders(): HasMany
-    // {
-    //     return $this->hasMany(BarangOrder::class);
-    // }
 
-    /**
-     * Scope untuk barang aktif
-     */
- 
 }

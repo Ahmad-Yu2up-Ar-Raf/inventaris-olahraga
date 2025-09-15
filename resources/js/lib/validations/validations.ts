@@ -1,5 +1,5 @@
 
-import {  StatusBarangValue} from "@/config/enum-type";
+import {  StatusBarangValue, StatusPinjamanValue, visibilityValue} from "@/config/enum-type";
 import * as z from "zod";
 
 
@@ -44,11 +44,9 @@ export const barangSchema = z.object({
   nama: z.string().min(4, "Name is required"),
   gambar: imageSchema,
   deskripsi: z.string().optional(),
-  lab: z.string().optional(),
-
   quantity: z.coerce.number().min(2, "Harga is required"),
 
-
+  visibility: z.enum(visibilityValue).optional(),
 
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
@@ -62,4 +60,35 @@ export const barangSchema = z.object({
 
 
 
+export const  userSchema = z.object ({
+    id:  z.number().optional(),
+    name:  z.coerce.string().min(1, "File name is required"),
+    email: z.coerce.string().min(1, "File name is required"),
+    avatar:  z.coerce.string().optional(),
+    email_verified_at:  z.coerce.string().min(1, "File name is required"),
+    created_at: z.coerce.date().optional(),
+    updated_at: z.coerce.date().optional(),
+})
+
+export const pinjamanSchema = z.object({
+    id: z.number().optional(),
+    barang_id: z.number().min(1),
+    nama: z.string().min(4, "Name is required"),
+    tanggal_dipinjam: z.coerce.date(),
+    tanggal_dikembalikan: z.coerce.date(),
+
+
+  jumlah_pinjaman: z.coerce.number().min(1, "Harga is required"),
+  status: z.enum(StatusPinjamanValue).optional(),
+  barang: barangSchema.optional(),
+  peminjam: userSchema.optional(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional(),
+
+
+});
+
+
+
+export type PinjamanSchema = z.infer<typeof pinjamanSchema>;
 export type BarangsSchema = z.infer<typeof barangSchema>;

@@ -1,8 +1,12 @@
 import DashboardSkeleton from '@/components/ui/fragments/DashboardSkeleton';
 import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout';
+import { cn } from '@/lib/utils';
+
+import ReactLenis from 'lenis/react'
 
 import { Head, usePage } from '@inertiajs/react';
 import { type ReactNode } from 'react';
+import SiteFooter from '@/components/ui/core/layout/site-footer';
 
 interface AppLayoutProps {
     children?: ReactNode;
@@ -22,12 +26,16 @@ export default ({ children, ...props }: AppLayoutProps) =>
     return(
     <AppLayoutTemplate  {...props}>
         <Head title={pathNames[currentPath]}/>
-           <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
+      
+           <div className={cn("flex h-full flex-1 flex-col rounded-xl " ,
 
-        {children ? children: (
-            <DashboardSkeleton/>
-        )}
+   pathNames[0] === 'dashboard' && 'p-5'
+                 
+           )}>
+
+{children}
            </div>
+          
     </AppLayoutTemplate>
 );
 }

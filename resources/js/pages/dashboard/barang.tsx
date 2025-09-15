@@ -20,9 +20,9 @@ export default function Pages( { ...props } : PageProps) {
     return (
         < >
 
-<header className="flex flex-col gap-0.5">
+<header className="flex flex-col gap-0.5 mb-6">
     <h2 className="text-3xl font-bold tracking-tight font-sans">Barang Management</h2>
-    <p className="text-muted-foreground">Here is your gallery list. Manage your barang here.</p>
+    <p className="text-muted-foreground">Here is your pinjaman list. Manage your barang here.</p>
   </header>
 
             

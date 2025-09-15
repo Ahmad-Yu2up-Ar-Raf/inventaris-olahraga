@@ -16,6 +16,7 @@ import {
   Settings2,
   SquareTerminal,
   Store,
+  Users,
 } from "lucide-react"
 
 
@@ -65,6 +66,12 @@ import { usePage } from "@inertiajs/react";
         title: "Barang",
         url: "/dashboard/barang",
         icon: Store,
+        isActive: false,
+      },
+      {
+        title: "Pinjaman",
+        url: "/dashboard/pinjaman",
+        icon: Users,
         isActive: false,
       },
    

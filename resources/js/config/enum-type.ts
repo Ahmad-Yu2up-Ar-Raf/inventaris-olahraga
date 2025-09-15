@@ -11,11 +11,23 @@ export interface OptionItem {
   
 
   export const StatusBarang: OptionItem[] = [
-    { value: 'baik', label: 'Baik' },
-    { value: 'buruk', label: 'Buruk ' },
+    { value: 'tersedia', label: 'Tersedia' },
+    { value: 'dipinjam', label: 'Dipinjam ' },
 
     
   ];
+  export const visibility: OptionItem[] = [
+    { value: 'public', label: 'Public' },
+    { value: 'private', label: 'Private ' },
+
+    
+  ];
+  export const StatusPinjaman: OptionItem[] = [
+    { value: 'pending', label: 'Pending' },
+    { value: 'Aprove', label: 'Aprove ' },
+    { value: 'decline', label: 'Decline ' },    
+  ];
+
 
 
 
@@ -24,7 +36,12 @@ export interface OptionItem {
 export const StatusBarangValue: string[] = StatusBarang.map(function(item) {
     return item['value'];
   });
+export const StatusPinjamanValue: string[] = StatusPinjaman.map(function(item) {
+    return item['value'];
+  });
 
 
-
+  export const visibilityValue : string[] = visibility.map(function(item) {
+    return item['value'];
+  });
 

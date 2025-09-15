@@ -5,7 +5,7 @@
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark (&:is(.dark *)); */
 
 @theme {
     --font-sans:
@@ -204,7 +204,7 @@
   }
 
   @media (width >= 1400px) {
-    max-width: 1400px;
+    max-width: 1200px;
   }
 
   @media (max-width: 640px) {

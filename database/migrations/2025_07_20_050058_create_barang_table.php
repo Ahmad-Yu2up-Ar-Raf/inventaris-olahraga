@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\BarangStatus;
+use App\Enums\VisibilityEnums;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,14 +17,12 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             
-            // Relasi
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             
-            // Informasi dasar barang
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('nama')->unique();
-            $table->string('lab');
             $table->text('deskripsi');
-            $table->string('status')->default(BarangStatus::class);
+            $table->string('status')->default(BarangStatus::Tersedia->value);
+            $table->string('visibility')->default(VisibilityEnums::Public->value);
             $table->integer('quantity')->default(1);
             $table->string('gambar')->nullable();
         });

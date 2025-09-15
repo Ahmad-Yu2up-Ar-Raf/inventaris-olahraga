@@ -7,7 +7,7 @@ interface PictureImageInputProps {
   value?: File | string | null
   onChange?: (file: File | string | null) => void
   disabled?: boolean
-  defaultValue?: string | null
+  defaultValue?: string | File
   error?: string
 }
 
@@ -132,7 +132,7 @@ const PictureImageInput = forwardRef<HTMLInputElement, PictureImageInputProps>(
             {previewUrl ? (
               <div className="absolute inset-0 flex items-center justify-center p-4">
                 <img
-                  src={previewUrl}
+                  src={`${previewUrl}`}
                   alt={fileName || "Uploaded image"}
                   className="mx-auto max-h-full rounded object-contain"
                   onError={(e) => {

@@ -4,7 +4,7 @@ namespace App\Enums;
 
 enum BarangStatus : string
 {
-    case Baik = 'baik';
-    case Buruk = 'buruk';
+    case Tersedia = 'tersedia';
+    case Dipinjam = 'dipinjam';
 
 }

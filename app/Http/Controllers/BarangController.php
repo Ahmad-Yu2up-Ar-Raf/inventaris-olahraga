@@ -147,17 +147,16 @@ class BarangController extends Controller
         try {
            
                 $updateData = [
-             'name' => $request['name'],
+             'nama' => $request['nama'],
   
            
             'deskripsi' => $request['deskripsi'],
-            'price' => $request['price'],
+
             'status' => $request['status'],
             'visibility' => $request['visibility'],
             'quantity' => $request['quantity'],
         
-             // Validasi untuk struktur files yang kompleks dengan base64
-            'files' =>  $request['files'],
+    
            
         ];
 
@@ -230,6 +229,10 @@ class BarangController extends Controller
               
             // SOLUSI: Delete satu per satu agar Observer terpicu
             foreach ($barang as $event) {
+                if ($event->gambar && Storage::disk('public')->exists(str_replace('storage/', '', $event->gambar))) {
+                    Storage::disk('public')->delete(str_replace('storage/', '', $event->gambar));
+                }
+        
                 $event->delete(); // Ini akan trigger observer barang
             }
             

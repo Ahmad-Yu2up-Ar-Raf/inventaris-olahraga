@@ -8,8 +8,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/fragments/table"
-import { BarangsSchema } from "@/lib/validations/validations"
-import { Box, Calendar, CircleCheck, CircleXIcon, DoorOpen, EllipsisIcon, Eye, EyeOff, User2Icon, Users2Icon, XIcon } from "lucide-react"
+import { PinjamanSchema } from "@/lib/validations/validations"
+import { Calendar, CircleCheck, CircleXIcon, DoorOpen, EllipsisIcon, Eye, EyeOff, User2Icon, Users2Icon, XIcon } from "lucide-react"
 
 import {
   DropdownMenu,
@@ -25,7 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/fragments/dropdown-menu";
 import { Button } from "@/components/ui/fragments/button";
-import { CreatebarangSheet } from "../create-sheet-barang";
+// import { CreatepinjamanSheet } from "../create-sheet-pinjaman";
 import { Input } from "@/components/ui/fragments/input";
 import React from "react";
 import { Filters, PaginatedData } from "@/types";
@@ -54,20 +54,20 @@ import { Checkbox } from "@/components/ui/fragments/checkbox";
 import { EmptyState } from "@/components/ui/fragments/empty-state";
 import { Badge } from "@/components/ui/fragments/badge";
 
-import { TasksTableActionBar } from "./barang-table-action-bar";
-import { UpdateBarangSheet } from "../update-barang-sheet";
+import { TasksTableActionBar } from "./pinjaman-table-action-bar";
+
 import { useInitials } from "@/hooks/use-initials";
 
 
 type componentsProps = {
-    Barangs : BarangsSchema[]
+    Pinjaman : PinjamanSchema[]
     filters: Filters
     className?: string
     PaginatedData: PaginatedData
 }
 
 
-export function BarangDataTable({Barangs, filters , className, PaginatedData}: componentsProps) {
+export function PinjamanDataTable({Pinjaman, filters , className, PaginatedData}: componentsProps) {
 const [selectedIds, setSelectedIds] = React.useState<(number )[]>([]);
   const [open, setOpen] = React.useState(false);
      const currentPath = window.location.pathname;
@@ -79,7 +79,7 @@ const [searchTerm, setSearchTerm] = React.useState(filters.search);
     const debouncedSearch = React.useMemo(
     () =>
       debounce((search: string) => {
-        router.get(route(`dashboard.barang.index`), {
+        router.get(route(`dashboard.pinjaman.index`), {
           search: search
         }, {
           preserveState: true,
@@ -89,7 +89,7 @@ const [searchTerm, setSearchTerm] = React.useState(filters.search);
     [pathNames] // Update dependencies
 );
 
-  const AllIds: number[] = Barangs.map(item => item.id!);
+  const AllIds: number[] = Pinjaman.map(item => item.id!);
 
   // Check if all items are selected
   const isAllSelected = AllIds.length > 0 && AllIds.every(id => selectedIds.includes(id));
@@ -102,8 +102,8 @@ const [searchTerm, setSearchTerm] = React.useState(filters.search);
 const id: number[] = [taskId] 
 
 console.log(taskId)
-          toast.loading("Barang deleting...",  { id: "barang-delete" });
-      router.delete(route(`dashboard.barang.destroy`, id), {
+          toast.loading("Pinjaman deleting...",  { id: "peminjam-delete" });
+      router.delete(route(`dashboard.pinjaman.destroy`, id), {
         data: { ids: id } ,
         preserveScroll: true,
         preserveState: true,
@@ -111,13 +111,13 @@ console.log(taskId)
           setProcessing(true);
         },
         onSuccess: () => {
-          toast.success("Barang deleted successfully",  { id: "barang-delete" });
+          toast.success("Pinjaman deleted successfully",  { id: "peminjam-delete" });
           setOpenModal(false);
           router.reload(); 
         },
         onError: (errors: any) => {
           console.error("Delete error:", errors);
-          toast.error(errors?.message || "Failed to delete the barang" , { id: "barang-delete" });
+          toast.error(errors?.message || "Failed to delete the peminjam" , { id: "peminjam-delete" });
         },
         onFinish: () => {
           setProcessing(false);
@@ -125,7 +125,7 @@ console.log(taskId)
       });
     } catch (error) {
       console.error("Delete operation error:", error);
-      toast.error("An unexpected error occurred",  { id: "barang-delete" });
+      toast.error("An unexpected error occurred",  { id: "peminjam-delete" });
       setProcessing(false);
     }
   };
@@ -156,8 +156,8 @@ console.log(taskId)
 
 
 const actions = [
-  "update-status",
-  "update-visiblity",
+  // "update-status",
+  // "update-visiblity",
   "delete",
 ] as const;
 
@@ -165,10 +165,10 @@ const actions = [
   const [isPending, startTransition] = React.useTransition();
   const [currentAction, setCurrentAction] = React.useState<Action | null>(null);
 const [isAnyPending, setIsAnypending] = React.useState<boolean>(false);
-  const getIsActionPending = React.useCallback(
-    (action: Action) => isPending && currentAction === action,
-    [isPending, currentAction],
-  );
+  // const getIsActionPending = React.useCallback(
+  //   (action: Action) => isPending && currentAction === action,
+  //   [isPending, currentAction],
+  // );
 
 
 
@@ -177,17 +177,17 @@ const [isAnyPending, setIsAnypending] = React.useState<boolean>(false);
   const onTaskDelete = React.useCallback(() => {
     setCurrentAction("delete");
     setIsAnypending(true)
-    toast.loading("Deleting data...", { id: "barang-delete" });
+    toast.loading("Deleting data...", { id: "pinjaman-delete" });
     
     startTransition(async () => {
       try {
-        router.delete(route(`dashboard.barang.destroy`, selectedIds), {
+        router.delete(route(`dashboard.pinjaman.destroy`, selectedIds), {
           data: { ids: selectedIds },
           preserveScroll: true,
           preserveState: true,
  
           onSuccess: () => {
-            toast.success("Barangs deleted successfully", { id: "barang-delete" });
+            toast.success("Pinjaman deleted successfully", { id: "pinjaman-delete" });
          setSelectedIds([])
             router.reload(); 
               setIsAnypending(false)
@@ -197,108 +197,108 @@ const [isAnyPending, setIsAnypending] = React.useState<boolean>(false);
               setCurrentAction(null);
                       setIsAnypending(false)
             console.error("Delete error:", errors);
-            toast.error(errors?.message || "Failed to delete the barang", { id: "barang-delete" });
+            toast.error(errors?.message || "Failed to delete the pinjaman", { id: "pinjaman-delete" });
           },
         });
       } catch (error) {
-        toast.error("Failed to delete items", { id: "barang-delete" });
+        toast.error("Failed to delete items", { id: "pinjaman-delete" });
         setCurrentAction(null);
       }
     });
-  }, [Barangs, selectedIds, pathNames]);
+  }, [Pinjaman, selectedIds, pathNames]);
 
 
 
-  const onTaskUpdate = React.useCallback(
-    ({
-      field,
-      value,
-    }: {
-      field: "status" | "visibility" ;
-      value: string;
-    }) => {
-      const actionType: Action =
-        field === "status" ? "update-status" :
-            "update-visiblity";
-   setIsAnypending(true)
-      setCurrentAction(actionType);
+  // const onTaskUpdate = React.useCallback(
+  //   ({
+  //     field,
+  //     value,
+  //   }: {
+  //     field: "status" | "visibility" ;
+  //     value: string;
+  //   }) => {
+  //     const actionType: Action =
+  //       field === "status" ? "update-status" :
+  //           "update-visiblity";
+  //  setIsAnypending(true)
+  //     setCurrentAction(actionType);
 
-      startTransition(async () => {
-        try {
+  //     startTransition(async () => {
+  //       try {
 
-          const formData = {
+  //         const formData = {
               
-              ids: selectedIds ,
-              value: value,
-              colum: field
-              };
+  //             ids: selectedIds ,
+  //             value: value,
+  //             colum: field
+  //             };
       
         
       
-              router.post(route(`dashboard.barang.status`, selectedIds), formData, {
-                preserveScroll: true,
-                preserveState: true,
-                forceFormData: true,
-                onBefore: (visit) => {
-                  console.log('Update request about to start:', visit);
-                },
-                onStart: (visit) => {
-                  console.log('Update request started');
-                  toast.loading('Updating barang data...', { id: 'update-toast' });
-                },
-                onSuccess: (page) => {
-                  console.log('Update success response:', page);
-                 setCurrentAction(null);
-                      setIsAnypending(false)
-                  toast.success('Barangs updated successfully', { id: 'update-toast' });
+  //             router.post(route(`dashboard.pinjaman.status`, selectedIds), formData, {
+  //               preserveScroll: true,
+  //               preserveState: true,
+  //               forceFormData: true,
+  //               onBefore: (visit) => {
+  //                 console.log('Update request about to start:', visit);
+  //               },
+  //               onStart: (visit) => {
+  //                 console.log('Update request started');
+  //                 toast.loading('Updating peminjam data...', { id: 'update-toast' });
+  //               },
+  //               onSuccess: (page) => {
+  //                 console.log('Update success response:', page);
+  //                setCurrentAction(null);
+  //                     setIsAnypending(false)
+  //                 toast.success('Pinjaman updated successfully', { id: 'update-toast' });
             
-                },
-                onError: (errors) => {
-                    setCurrentAction(null);
-                      setIsAnypending(false)
-                  console.error('Update form submission error:', errors);
+  //               },
+  //               onError: (errors) => {
+  //                   setCurrentAction(null);
+  //                     setIsAnypending(false)
+  //                 console.error('Update form submission error:', errors);
                   
         
-                },
-                onFinish: () => {
-                 setCurrentAction(null);
-                      setIsAnypending(false)
-                  console.log('Update request finished');
-                }
-              });
+  //               },
+  //               onFinish: () => {
+  //                setCurrentAction(null);
+  //                     setIsAnypending(false)
+  //                 console.log('Update request finished');
+  //               }
+  //             });
    
 
 
-          // Success will be handled by useEffect when isPending becomes false
-        } catch (error) {
-          toast.error(`Failed to update ${field}`, { id: actionType });
-          console.log(error)
-          setCurrentAction(null);
-            setIsAnypending(true)
-        }
-      });
-    }, 
-    [Barangs, selectedIds, pathNames],
-  );
+  //         // Success will be handled by useEffect when isPending becomes false
+  //       } catch (error) {
+  //         toast.error(`Failed to update ${field}`, { id: actionType });
+  //         console.log(error)
+  //         setCurrentAction(null);
+  //           setIsAnypending(true)
+  //       }
+  //     });
+  //   }, 
+  //   [Pinjaman, selectedIds, pathNames],
+  // );
 
-const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | null>(null);
-    const [openUpdate, setOpenUpdate] = React.useState(false)
-  const handleEdit = (barang: BarangsSchema) => {
-    setcurrentBarang(barang);
-    setOpenUpdate(true);
-  };
- const handleUpdateClose = (open: boolean) => {
-    setOpenUpdate(open);
-    if (!open) {
-      setcurrentBarang(null);
-    }
-  };
+// const [currentPinjaman , setcurrentPinjaman ] = React.useState<(PinjamanSchema) | null>(null);
+//     const [openUpdate, setOpenUpdate] = React.useState(false)
+//   const handleEdit = (peminjam: PinjamanSchema) => {
+//     setcurrentPinjaman(peminjam);
+//     setOpenUpdate(true);
+//   };
+//  const handleUpdateClose = (open: boolean) => {
+//     setOpenUpdate(open);
+//     if (!open) {
+//       setcurrentPinjaman(null);
+//     }
+//   };
 
 
 
   const getInitial = useInitials()
 
-  if(Barangs.length == 0 && filters.search == "")
+  if(Pinjaman.length == 0 && filters.search == "")
 
 
 
@@ -306,14 +306,14 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
     <>
   <EmptyState
           icons={[Calendar]}
-          title={`No Barang data yet`}
-          description={`Start by adding your first barang`}
-          action={{
-            label: `Add barang`,
-            onClick: () => setOpen(true)
-          }}
+          title={`No Pinjaman data yet`}
+          description={`Start by adding your first peminjam`}
+          // action={{
+          //   label: `Add peminjam`,
+          //   onClick: () => setOpen(true)
+          // }}
         />
-        <SheetComponents 
+        {/* <SheetComponents 
        
          
          trigger={false}
@@ -321,7 +321,7 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
          onOpenChange={() => {
       setOpen(!open)
     }}
-        />
+        /> */}
     </>
   )
 
@@ -342,7 +342,7 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
               }}
               className="md:max-w-[20em]   col-span-2  h-8 w-full  "
             />
-                <SheetComponents 
+                {/* <SheetComponents 
        
          
          trigger
@@ -350,14 +350,14 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
          onOpenChange={() => {
       setOpen(!open)
     }}
-        />
+        /> */}
     </div>
 
 
       <div className="overflow-hidden rounded-md border">
 
     <Table>
-      <TableCaption className=" sr-only">A list of your recent barang.</TableCaption>
+      <TableCaption className=" sr-only">A list of your recent pinjaman.</TableCaption>
       <TableHeader className="bg-accent/15">
         <TableRow>
           <TableHead className="w-[100px]">   
@@ -368,15 +368,14 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
             aria-label="Select all"
             className="translate-y-0.5  mx-3   mr-4"
           /></TableHead>
-          {Barangs.length >= 1 && (
+          {Pinjaman.length >= 1 && (
             <>
-          <TableHead className=" ">Nama Barang</TableHead>
+          <TableHead className=" ">Nama Peminjam</TableHead>
 
-          <TableHead>Visibility</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Jumlah Barang</TableHead>
-          <TableHead>Di Buat Pada</TableHead>
-          <TableHead>Update Terakhir</TableHead>
+          <TableHead>Barang Pinjaman</TableHead>
+          <TableHead>Tanggal Dipinjam</TableHead>
+          <TableHead>Tanggal Dikembalikan</TableHead>
+          <TableHead>Dibuat Pada</TableHead>
        
 
           <TableHead className="">action</TableHead>
@@ -387,15 +386,15 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
         </TableRow>
       </TableHeader>
       <TableBody>
-        {Barangs.length > 0 ?  Barangs.map((barang) =>{ 
+        {Pinjaman.length > 0 ?  Pinjaman.map((peminjam) =>{ 
            
         return(
  
-          <TableRow key={barang.id}>
+          <TableRow key={peminjam.id}>
             <TableCell className="font-medium sticky right-0 ">
                <Checkbox
-              checked={selectedIds.includes(barang.id!)}
-                      onCheckedChange={() => HandleSelect(barang.id!)}
+              checked={selectedIds.includes(peminjam.id!)}
+                      onCheckedChange={() => HandleSelect(peminjam.id!)}
             aria-label="Select row"
             className="translate-y-0.5  mx-3   mr-4"
           /></TableCell>
@@ -404,51 +403,44 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
  
             > 
             
-               <Avatar className="  relative flex size-10 shrink-0 overflow-hidden rounded-full">
-                                        <AvatarImage src={`${barang?.gambar!}`} alt={barang.nama} />
-                                        <AvatarFallback className="rounded-lg  bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                                            {getInitial(barang.nama)}
-                                        </AvatarFallback>
-                                    </Avatar>
-            {barang.nama}</TableCell>
+          
+            {peminjam.nama}</TableCell>
  
             
 
         
             <TableCell className="">  
                   <Badge variant="outline" className="text-muted-foreground px-1.5">
-        {barang.visibility === "private" ? (
+        {peminjam.visibility === "private" ? (
           <EyeOff />
         ) : (
           <Eye/>
         )}
-        {barang.visibility}
+        {peminjam.visibility}
       </Badge>
       </TableCell>
         
           <TableCell>
             
           <Badge variant="outline" className="py-1 [&>svg]:size-3.5">
-            {barang.status == 'tersedia' ? (
+            {peminjam.status == 'tersedia' ? (
 
               <CircleCheck/>
             ) : (
               <CircleXIcon/>
             )}
           
-            <span className="capitalize ">{barang.status}</span>
+            <span className="capitalize ">{peminjam.status}</span>
          
           </Badge></TableCell>
           <TableCell>    
                  <Badge variant="outline" className="py-1 [&>svg]:size-3.5">
-            <Box />
+            <Users2Icon />
           
-            <span className="capitalize  underline-offset-4  hover:underline font-mono">{barang.quantity }</span>
+            <span className="capitalize  underline-offset-4  hover:underline font-mono">{peminjam.quantity }</span>
          
           </Badge>
           </TableCell>
-          <TableCell className="">{new Date(barang.created_at).toLocaleDateString()}</TableCell>
-          <TableCell className="">{new Date(barang.updated_at).toLocaleDateString()}</TableCell>
             <TableCell className=" w-fit">
                 <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
@@ -462,16 +454,16 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40">
         
-              <DropdownMenuItem
-                onSelect={() => handleEdit(barang)}
+              {/* <DropdownMenuItem
+                onSelect={() => handleEdit(peminjam)}
               >
                 Edit
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
   
 
               <DropdownMenuSeparator />
               <DropdownMenuItem
-             onSelect={() => handleDelete(barang.id!)}
+             onSelect={() => handleDelete(peminjam.id!)}
               >
                 Delete
                 <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
@@ -490,7 +482,7 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
       ) : (
               <TableRow>
                 <TableCell
-                  colSpan={Barangs.length}
+                  colSpan={Pinjaman.length}
                   className="h-24 text-center"
                 >
                   No results.
@@ -505,7 +497,7 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
       </div>
     <div className=  "flex w-full flex-col-reverse items-center justify-between gap-4 overflow-auto p-1 sm:flex-row sm:gap-8">
       <div className="flex-1 whitespace-nowrap text-muted-foreground text-sm">
-    {selectedIds.length} of {Barangs.length} row(s) selected.
+    {selectedIds.length} of {Pinjaman.length} row(s) selected.
       </div>
       <div className="flex flex-col-reverse items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
         <div className="flex items-center space-x-2">
@@ -514,7 +506,7 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
             value={`${PaginatedData.perPage}`}
             onValueChange={(value) => {
                 inertiaRouter.get(
-           route(`dashboard.barang.index`),
+           route(`dashboard.pinjaman.index`),
            { 
              perPage:value,
              
@@ -552,7 +544,7 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
             className="hidden h-8 w-8 p-0 lg:flex"
             onClick={() => {
                  inertiaRouter.get(
-           route(`dashboard.barang.index`),
+           route(`dashboard.pinjaman.index`),
            { 
              page: 1,
              search: filters?.search,
@@ -575,7 +567,7 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
             className="h-8 w-8 p-0"
                 onClick={() => {
                  inertiaRouter.get(
-           route(`dashboard.barang.index`),
+           route(`dashboard.pinjaman.index`),
            { 
              page: PaginatedData.currentPage - 1,
       
@@ -599,7 +591,7 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
             className="h-8 w-8 p-0"
             onClick={() => {
                  inertiaRouter.get(
-           route(`dashboard.barang.index`),
+           route(`dashboard.pinjaman.index`),
            { 
              page: PaginatedData.currentPage + 1,
       
@@ -623,7 +615,7 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
             className="hidden h-8 w-8 p-0 lg:flex"
               onClick={() => {
                  inertiaRouter.get(
-           route(`dashboard.barang.index`),
+           route(`dashboard.pinjaman.index`),
            { 
              page: PaginatedData.lastPage,
       
@@ -648,7 +640,6 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
     </div>
   {selectedIds.length > 0 && (
         <TasksTableActionBar
-        onTaskUpdate={onTaskUpdate}
         isPending={isAnyPending}
         setSelected={setSelectedIds}
           onTaskDelete={onTaskDelete}
@@ -656,42 +647,9 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
           // getIsActionPending={getIsActionPending}
         />
       )}
-          {currentBarang && (
-
-       <UpdateBarangSheet
-         
-                  task={currentBarang }
-                  open={openUpdate} 
-                  onOpenChange={handleUpdateClose}
-                />
-          )}
+  
     </>
   )
 }
-
-
-
-const SheetComponents = React.memo(({ 
-
-  open, 
-  trigger,
-  onOpenChange,
-}: {
-
-  trigger?: boolean
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}) => {
-
-  return (
-    <CreatebarangSheet
-      trigger={trigger} 
-      open={open} 
-      onOpenChange={onOpenChange}
-    />
-  );
-});
-
-SheetComponents.displayName = 'SheetComponents';
 
 

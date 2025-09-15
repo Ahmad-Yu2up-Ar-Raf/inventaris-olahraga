@@ -35,7 +35,7 @@ import {
 
 import PictureImageInput from "@/components/ui/fragments/picture-input";
 import { BarangsSchema } from "@/lib/validations/validations";
-import { StatusBarang } from "@/config/enum-type";
+import { StatusBarang, visibility } from "@/config/enum-type";
 
 
 
@@ -121,7 +121,7 @@ export function TaskForm<T extends FieldValues, >({
           onChange={(file) => {
             field.onChange(file)
           }}
-          defaultValue={curentBarang?.gambar || null}
+          defaultValue={curentBarang?.gambar || undefined}
           error={fieldState.error?.message}
         />
       </FormControl>
@@ -141,11 +141,11 @@ export function TaskForm<T extends FieldValues, >({
               name={"quantity" as FieldPath<T>}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn(isPending && "text-muted-foreground")}>Capacity</FormLabel>
+                  <FormLabel className={cn(isPending && "text-muted-foreground")}>quantity</FormLabel>
                   <FormControl>
                     <Input 
                 
-                      placeholder={`Capactity name`}
+                      placeholder={`Quantity`}
                       type="number"
                       disabled={isPending}
                       {...field}
@@ -161,29 +161,7 @@ export function TaskForm<T extends FieldValues, >({
 
 
 
-<FormField
-          control={form.control}
-          name={"lab" as FieldPath<T>}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Lab</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="Lab 1">Lab 1</SelectItem>
-                  <SelectItem value="Lab 2">Lab 2</SelectItem>
-                  <SelectItem value="Lab 3">Lab 3</SelectItem>
-                </SelectContent>
-              </Select>
-                <FormDescription className=" sr-only">You can manage email addresses in your email settings.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
 
           </section>
           
@@ -223,6 +201,32 @@ export function TaskForm<T extends FieldValues, >({
 
 
 
+
+     <FormField
+          control={form.control}
+          name={"visibility" as FieldPath<T>}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Visibility</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {visibility.map((item,i ) => (
+
+                  <SelectItem key={i} value={item.value}>{item.label}</SelectItem>
+                  ))}
+                  
+                </SelectContent>
+              </Select>
+                <FormDescription className=" sr-only">You can manage email addresses in your email settings.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
 
 

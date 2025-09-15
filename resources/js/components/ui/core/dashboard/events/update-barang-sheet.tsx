@@ -55,7 +55,7 @@ export function UpdateBarangSheet({ task, ...props }: UpdateTaskSheetProps) {
     deskripsi: task?.deskripsi,
     quantity: task?.quantity,
 
-    lab: task?.lab,
+   visibility: task?.visibility,
     status: task?.status,
     },
     resolver: zodResolver(barangSchema),
@@ -71,8 +71,8 @@ console.log(task)
         gambar:  task?.gambar,
         deskripsi: task?.deskripsi,
         quantity: task?.quantity,
-    
-        lab: task?.lab,
+
+        visibility: task?.visibility,
         status: task?.status,
       });
     }
@@ -84,16 +84,6 @@ console.log(task)
       return;
     }
     setLoading(true);
-
-    
-    // Validasi apakah semua files memiliki base64Data (untuk file baru)
-    const newFiles = input?.files!.filter(file => file.file instanceof File);
-    const filesWithoutBase64 = newFiles.filter(file => !file.base64Data);
-    
-    if (filesWithoutBase64.length > 0) {
-      toast.error("Some new files are missing data. Please try uploading again.");
-      return;
-    }
 
 
 

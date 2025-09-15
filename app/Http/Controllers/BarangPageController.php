@@ -6,7 +6,7 @@ use App\Models\Barang;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class HomeController extends Controller
+class BarangPageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -38,7 +38,7 @@ class HomeController extends Controller
             }
         }
 
-// "http://localhost:8000/storage/uploads//1756104047_elijah-pilchard--ZHRIK-3akk-unsplash.jpg"
+
        $barang = $query->orderBy('created_at', 'desc')->paginate($perPage, ['*'], 'page', $page);
 
        $barang->through(function($item) {
@@ -47,7 +47,7 @@ class HomeController extends Controller
                 'gambar' => $item->gambar ? url($item->gambar) : null
             ];
         });
-        return Inertia::render('welcome', [
+        return Inertia::render('barang/index', [
             'barang' => $barang->items() ?? [],
          'filters' => [
                 'search' => $search ?? '',
@@ -90,9 +90,17 @@ class HomeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+ public function show(Barang $barang)
     {
-        //
+        // Load candidates with votes count and barang data
+
+
+
+  
+        return Inertia::render('barang/[id]', [
+            'barang' => $barang
+
+        ]);
     }
 
     /**
