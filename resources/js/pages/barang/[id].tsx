@@ -1,4 +1,7 @@
+import Detail from "@/components/ui/core/main/section/detail";
 import { BarangsSchema } from "@/lib/validations/validations";
+import { Link } from "@inertiajs/react";
+import { ArrowLeft } from "lucide-react";
 
 
 
@@ -14,7 +17,7 @@ export default function Barang({ ...props}: PageProps) {
     return (
         <>
             
-    <div className=" min-h-[3232323dvh]"></div>
+  <Detail product={props.barang}/>
         </>
     );
 }

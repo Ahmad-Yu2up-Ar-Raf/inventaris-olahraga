@@ -19,7 +19,7 @@ import {
   SelectItem,
 } from "@/components/ui/fragments/select";
 import { Separator } from "@/components/ui/fragments/separator";
-import { StatusBarang} from "@/config/enum-type";
+import { StatusBarang, StatusPinjaman} from "@/config/enum-type";
 
 
 
@@ -33,14 +33,14 @@ table: number[];
   onTaskDelete: () => void;
 isPending: boolean
   //  isPendingExport: boolean
-//    onTaskUpdate: ({ field, value, }: {
-//     field: "status" | "visibility" ;
-//     value: string;
+   onTaskUpdate: ({ field, value, }: {
+    field: "status"  ;
+    value: string;
    
-// }) => void
+}) => void
 }
 
-export function TasksTableActionBar({ setSelected, table, isPending, onTaskDelete, }: TasksTableActionBarProps) {
+export function TasksTableActionBar({ setSelected, table, isPending, onTaskDelete, onTaskUpdate }: TasksTableActionBarProps) {
 
 
 
@@ -54,7 +54,7 @@ export function TasksTableActionBar({ setSelected, table, isPending, onTaskDelet
         className="hidden data-[orientation=vertical]:h-5 sm:block"
       />
       <div className="flex items-center gap-1.5 text-accent-foreground">
-        {/* <Select
+        <Select
           onValueChange={(value: string) =>
             onTaskUpdate({ field: "status", value })
           }
@@ -70,14 +70,14 @@ export function TasksTableActionBar({ setSelected, table, isPending, onTaskDelet
           </SelectTrigger>
           <SelectContent align="center">
             <SelectGroup>
-              {StatusBarang.map((status) => (
+              {StatusPinjaman.map((status) => (
                 <SelectItem key={status.label} value={status.value} className="capitalize">
                   {status.label}
                 </SelectItem>
               ))}
             </SelectGroup>
           </SelectContent>
-        </Select> */}
+        </Select>
       
         <DataTableActionBarAction
           size="icon"

@@ -24,7 +24,7 @@ export interface OptionItem {
   ];
   export const StatusPinjaman: OptionItem[] = [
     { value: 'pending', label: 'Pending' },
-    { value: 'Aprove', label: 'Aprove ' },
+    { value: 'approve', label: 'Aprove ' },
     { value: 'decline', label: 'Decline ' },    
   ];
 

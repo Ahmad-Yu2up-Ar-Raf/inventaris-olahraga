@@ -52,11 +52,12 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/fragments/checkbox";
 import { EmptyState } from "@/components/ui/fragments/empty-state";
-import { Badge } from "@/components/ui/fragments/badge";
+import { Badge } from "@/components/ui/fragments/badge-shadcn";
 
 import { TasksTableActionBar } from "./barang-table-action-bar";
 import { UpdateBarangSheet } from "../update-barang-sheet";
 import { useInitials } from "@/hooks/use-initials";
+import { DeleteTasksDialog } from "@/components/ui/fragments/delete-task-dialog";
 
 
 type componentsProps = {
@@ -70,6 +71,8 @@ type componentsProps = {
 export function BarangDataTable({Barangs, filters , className, PaginatedData}: componentsProps) {
 const [selectedIds, setSelectedIds] = React.useState<(number )[]>([]);
   const [open, setOpen] = React.useState(false);
+  const [deletedId, setDeletedId] = React.useState<number | null>(null);
+  const [openDelete, setOpenDelete] = React.useState(false);
      const currentPath = window.location.pathname;
           const pathNames = currentPath.split('/').filter(path => path)[1]
     //  const [completionFilter, setCompletionFilter] = React.useState<string>(filters.merek as string);
@@ -114,6 +117,7 @@ console.log(taskId)
           toast.success("Barang deleted successfully",  { id: "barang-delete" });
           setOpenModal(false);
           router.reload(); 
+          
         },
         onError: (errors: any) => {
           console.error("Delete error:", errors);
@@ -121,8 +125,11 @@ console.log(taskId)
         },
         onFinish: () => {
           setProcessing(false);
+            setOpenDelete(false)
+        setDeletedId(null)
         }
       });
+            
     } catch (error) {
       console.error("Delete operation error:", error);
       toast.error("An unexpected error occurred",  { id: "barang-delete" });
@@ -200,6 +207,7 @@ const [isAnyPending, setIsAnypending] = React.useState<boolean>(false);
             toast.error(errors?.message || "Failed to delete the barang", { id: "barang-delete" });
           },
         });
+
       } catch (error) {
         toast.error("Failed to delete items", { id: "barang-delete" });
         setCurrentAction(null);
@@ -471,7 +479,10 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
 
               <DropdownMenuSeparator />
               <DropdownMenuItem
-             onSelect={() => handleDelete(barang.id!)}
+             onSelect={() => {
+              setOpenDelete(true)
+             setDeletedId(barang.id!)
+            }}
               >
                 Delete
                 <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
@@ -646,6 +657,10 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
       </div>
     </div>
     </div>
+    {deletedId && (
+
+    <DeleteTasksDialog open={openDelete} handledeDelete={handleDelete} processing={processing} id={deletedId} trigger={false} onOpenChange={setOpenDelete}/>
+    )}
   {selectedIds.length > 0 && (
         <TasksTableActionBar
         onTaskUpdate={onTaskUpdate}

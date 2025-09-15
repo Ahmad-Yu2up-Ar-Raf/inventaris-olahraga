@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/fragments/table"
 import { PinjamanSchema } from "@/lib/validations/validations"
-import { Calendar, CircleCheck, CircleXIcon, DoorOpen, EllipsisIcon, Eye, EyeOff, User2Icon, Users2Icon, XIcon } from "lucide-react"
+import { Box, Calendar, CircleCheck, CircleXIcon, DoorOpen, EllipsisIcon, Eye, EyeOff, User2Icon, Users2Icon, XIcon } from "lucide-react"
 
 import {
   DropdownMenu,
@@ -52,7 +52,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/fragments/checkbox";
 import { EmptyState } from "@/components/ui/fragments/empty-state";
-import { Badge } from "@/components/ui/fragments/badge";
+import { Badge } from "@/components/ui/fragments/badge-shadcn";
 
 import { TasksTableActionBar } from "./pinjaman-table-action-bar";
 
@@ -156,7 +156,7 @@ console.log(taskId)
 
 
 const actions = [
-  // "update-status",
+  "update-status",
   // "update-visiblity",
   "delete",
 ] as const;
@@ -209,77 +209,75 @@ const [isAnyPending, setIsAnypending] = React.useState<boolean>(false);
 
 
 
-  // const onTaskUpdate = React.useCallback(
-  //   ({
-  //     field,
-  //     value,
-  //   }: {
-  //     field: "status" | "visibility" ;
-  //     value: string;
-  //   }) => {
-  //     const actionType: Action =
-  //       field === "status" ? "update-status" :
-  //           "update-visiblity";
-  //  setIsAnypending(true)
-  //     setCurrentAction(actionType);
+  const onTaskUpdate = React.useCallback(
+    ({
+      field,
+      value,
+    }: {
+      field: "status"  ;
+      value: string;
+    }) => {
+      const actionType: Action = "update-status"
+   setIsAnypending(true)
+      setCurrentAction(actionType);
 
-  //     startTransition(async () => {
-  //       try {
+      startTransition(async () => {
+        try {
 
-  //         const formData = {
+          const formData = {
               
-  //             ids: selectedIds ,
-  //             value: value,
-  //             colum: field
-  //             };
+              ids: selectedIds ,
+              value: value,
+              column: field
+              };
       
         
       
-  //             router.post(route(`dashboard.pinjaman.status`, selectedIds), formData, {
-  //               preserveScroll: true,
-  //               preserveState: true,
-  //               forceFormData: true,
-  //               onBefore: (visit) => {
-  //                 console.log('Update request about to start:', visit);
-  //               },
-  //               onStart: (visit) => {
-  //                 console.log('Update request started');
-  //                 toast.loading('Updating peminjam data...', { id: 'update-toast' });
-  //               },
-  //               onSuccess: (page) => {
-  //                 console.log('Update success response:', page);
-  //                setCurrentAction(null);
-  //                     setIsAnypending(false)
-  //                 toast.success('Pinjaman updated successfully', { id: 'update-toast' });
+              router.post(route(`dashboard.pinjaman.status`, selectedIds), formData, {
+                preserveScroll: true,
+                preserveState: true,
+                forceFormData: true,
+                onBefore: (visit) => {
+                  console.log('Update request about to start:', visit);
+                },
+                onStart: (visit) => {
+                  console.log('Update request started');
+                  toast.loading('Updating peminjam data...', { id: 'update-toast' });
+                },
+                onSuccess: (page) => {
+                  console.log('Update success response:', page);
+                 setCurrentAction(null);
+                      setIsAnypending(false)
+                  toast.success('Pinjaman updated successfully', { id: 'update-toast' });
             
-  //               },
-  //               onError: (errors) => {
-  //                   setCurrentAction(null);
-  //                     setIsAnypending(false)
-  //                 console.error('Update form submission error:', errors);
+                },
+                onError: (errors) => {
+                    setCurrentAction(null);
+                      setIsAnypending(false)
+                  console.error('Update form submission error:', errors);
                   
         
-  //               },
-  //               onFinish: () => {
-  //                setCurrentAction(null);
-  //                     setIsAnypending(false)
-  //                 console.log('Update request finished');
-  //               }
-  //             });
+                },
+                onFinish: () => {
+                 setCurrentAction(null);
+                      setIsAnypending(false)
+                  console.log('Update request finished');
+                }
+              });
    
 
 
-  //         // Success will be handled by useEffect when isPending becomes false
-  //       } catch (error) {
-  //         toast.error(`Failed to update ${field}`, { id: actionType });
-  //         console.log(error)
-  //         setCurrentAction(null);
-  //           setIsAnypending(true)
-  //       }
-  //     });
-  //   }, 
-  //   [Pinjaman, selectedIds, pathNames],
-  // );
+          // Success will be handled by useEffect when isPending becomes false
+        } catch (error) {
+          toast.error(`Failed to update ${field}`, { id: actionType });
+          console.log(error)
+          setCurrentAction(null);
+            setIsAnypending(true)
+        }
+      });
+    }, 
+    [Pinjaman, selectedIds, pathNames],
+  );
 
 // const [currentPinjaman , setcurrentPinjaman ] = React.useState<(PinjamanSchema) | null>(null);
 //     const [openUpdate, setOpenUpdate] = React.useState(false)
@@ -372,11 +370,13 @@ const [isAnyPending, setIsAnypending] = React.useState<boolean>(false);
             <>
           <TableHead className=" ">Nama Peminjam</TableHead>
 
-          <TableHead>Barang Pinjaman</TableHead>
+          <TableHead>Nama Barang</TableHead>
+          <TableHead>Jumlah Pinjaman</TableHead>
+          <TableHead>Status</TableHead>
           <TableHead>Tanggal Dipinjam</TableHead>
           <TableHead>Tanggal Dikembalikan</TableHead>
           <TableHead>Dibuat Pada</TableHead>
-       
+             
 
           <TableHead className="">action</TableHead>
             </>
@@ -409,21 +409,28 @@ const [isAnyPending, setIsAnypending] = React.useState<boolean>(false);
             
 
         
-            <TableCell className="">  
-                  <Badge variant="outline" className="text-muted-foreground px-1.5">
-        {peminjam.visibility === "private" ? (
-          <EyeOff />
-        ) : (
-          <Eye/>
-        )}
-        {peminjam.visibility}
-      </Badge>
-      </TableCell>
+       
         
+           <TableCell>    
+                 <Badge variant="outline" className="py-1 [&>svg]:size-3.5">
+            <Box/>
+          
+            <span className="capitalize  underline-offset-4  hover:underline font-mono">{peminjam.barang?.nama}</span>
+         
+          </Badge>
+          </TableCell>
+            <TableCell>    
+                 <Badge variant="outline" className="py-1 [&>svg]:size-3.5">
+            <Box/>
+          
+            <span className="capitalize  underline-offset-4  hover:underline font-mono">{peminjam.jumlah_pinjaman}</span>
+         
+          </Badge>
+          </TableCell>
           <TableCell>
             
           <Badge variant="outline" className="py-1 [&>svg]:size-3.5">
-            {peminjam.status == 'tersedia' ? (
+            {peminjam.status == 'approve' ? (
 
               <CircleCheck/>
             ) : (
@@ -433,14 +440,10 @@ const [isAnyPending, setIsAnypending] = React.useState<boolean>(false);
             <span className="capitalize ">{peminjam.status}</span>
          
           </Badge></TableCell>
-          <TableCell>    
-                 <Badge variant="outline" className="py-1 [&>svg]:size-3.5">
-            <Users2Icon />
-          
-            <span className="capitalize  underline-offset-4  hover:underline font-mono">{peminjam.quantity }</span>
+       <TableCell className="">{new Date(peminjam.tanggal_dipinjam).toLocaleDateString()}</TableCell>
+              <TableCell className="">{new Date(peminjam.tanggal_dikembalikan).toLocaleDateString()}</TableCell>
+       <TableCell className="">{new Date(peminjam.created_at).toLocaleDateString()}</TableCell>
          
-          </Badge>
-          </TableCell>
             <TableCell className=" w-fit">
                 <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
@@ -640,6 +643,7 @@ const [isAnyPending, setIsAnypending] = React.useState<boolean>(false);
     </div>
   {selectedIds.length > 0 && (
         <TasksTableActionBar
+        onTaskUpdate={onTaskUpdate}
         isPending={isAnyPending}
         setSelected={setSelectedIds}
           onTaskDelete={onTaskDelete}

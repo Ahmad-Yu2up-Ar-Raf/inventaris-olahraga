@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePinjaman;
 use App\Models\Barang;
+use App\Models\Pinjaman;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -82,9 +84,20 @@ class BarangPageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePinjaman $request)
     {
-        //
+    $pinjaman = Pinjaman::create([
+                ...$request->validated(),
+              
+            ]);
+
+            $fileCount = count($pinjaman->files ?? []);
+            $message = $fileCount > 0 
+                ? "Pinjaman berhasil ditambahkan dengan {$fileCount} file."
+                : "Pinjaman berhasil ditambahkan.";
+
+            return redirect()->route('barang.index')
+                ->with('success', $message);
     }
 
     /**

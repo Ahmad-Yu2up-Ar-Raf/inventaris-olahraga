@@ -26,7 +26,7 @@ class UpdateBarang extends FormRequest
 
         return [
             'nama' => 'required|unique:barang,nama,' . $eventId . ' |max:255|string',
-        //    'gambar' => 'required|image|mimes:jpg,png,jpeg|max:2048|dimensions:min_width=100,min_height=100',
+           'gambar' => 'required|image|mimes:jpg,png,jpeg|max:2048|dimensions:min_width=100,min_height=100',
          
             'deskripsi' => 'nullable|string',
             'status' => 'nullable|string',

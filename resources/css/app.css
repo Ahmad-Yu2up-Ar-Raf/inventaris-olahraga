@@ -204,7 +204,7 @@
   }
 
   @media (width >= 1400px) {
-    max-width: 1200px;
+    max-width: 1000px;
   }
 
   @media (max-width: 640px) {

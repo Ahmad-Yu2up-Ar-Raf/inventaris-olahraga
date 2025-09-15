@@ -13,7 +13,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('perPage', 10);
+        $perPage = $request->input('perPage', 3);
         $search = $request->input('search');
            $page = $request->input('page', 1);
 
