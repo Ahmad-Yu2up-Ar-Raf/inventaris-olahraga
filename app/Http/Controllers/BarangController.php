@@ -24,7 +24,7 @@ class BarangController extends Controller
            $page = $request->input('page', 1);
 
         $status = $request->input('status');
-        $query = Barang::where('user_id', Auth::id());
+        $query = Barang::where('user_id', Auth::id())->with('pinjaman');
 
      if ($search) {
             $query->where(function($q) use ($search) {

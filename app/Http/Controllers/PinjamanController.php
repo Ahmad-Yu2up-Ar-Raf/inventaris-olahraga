@@ -24,7 +24,7 @@ class PinjamanController extends Controller
 
         // $status = $request->input('status');
         $query = Pinjaman::orderBy('created_at', 'desc')->with('barang');
-
+        $queryBarangIds = Barang::all()->where('user_id', Auth::id())->pluck('id')->toArray();
      if ($search) {
             $query->where(function($q) use ($search) {
                 $searchLower = strtolower($search);
@@ -33,9 +33,10 @@ class PinjamanController extends Controller
             });
         }
 
+;
+       $pinjaman = $query->whereIn('barang_id', $queryBarangIds )->paginate($perPage, ['*'], 'page', $page);
 
-
-       $pinjaman = $query->paginate($perPage, ['*'], 'page', $page);
+    $pinjaman = 
 
        $pinjaman->through(function($item) {
             return [
@@ -174,27 +175,39 @@ class PinjamanController extends Controller
 
 $pinjamanBarangIds = $pinjaman->pluck('barang_id')->toArray();
 
-             foreach ($pinjaman as $event) {
-            
-                $event->update([$column => $value]);
-            }
 
-     $barang = Barang::whereIn('id', $pinjamanBarangIds)->where('user_id', Auth::id())->get();
+$barang = Barang::whereIn('id', $pinjamanBarangIds)->where('user_id', Auth::id())->get();
 
-                
-             foreach ($barang as $event) {
+foreach ($barang as $event) {
 
 
-                if($value === 'approve'){
+    if($value === 'approve'){
+ 
+        $event->update(['status' => 'dipinjam']);
+    }else{
+        $event->update(['status' => 'tersedia']);
+ 
+ 
+    }
+ }
 
-                    $event->update(['status' => 'dipinjam']);
-                }else{
-                    $event->update(['status' => 'tersedia']);
+foreach ($pinjaman as $event) {
+    
+    if ($value == 'decline') {
+       
+        
+        $event->delete(); // Ini akan trigger observer pinjaman
+
+        
+    }else {
+      
+            $event->update([$column => $value]);
+    }
+    }
+
+   
 
 
-                }
-            }
-            
             DB::commit();
             
 

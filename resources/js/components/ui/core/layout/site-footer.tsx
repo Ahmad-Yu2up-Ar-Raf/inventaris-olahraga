@@ -71,7 +71,7 @@ const footerData = {
     { href: "#", label: "GitHub", icon: "G" },
     { href: "#", label: "LinkedIn", icon: "L" },
   ],
-  title: "Sticky Footer",
+  title: "SportHub",
   subtitle: "Scroll-triggered design",
   copyright: "©2024 All rights reserved",
 }

@@ -15,13 +15,13 @@ export default function AppSidebarLayout({ children,}: PropsWithChildren<{  }>) 
   const pathNames = currentPath.split('/').filter(path => path)[0]
 
     return (
-        <AppShell variant={pathNames == "dashboard" ?  "sidebar" : "header"}>
-            {pathNames == "dashboard" &&
+        <AppShell variant={ (pathNames === 'dashboard' || pathNames === 'settings')  ?  "sidebar" : "header"}>
+            {(pathNames === 'dashboard' || pathNames === 'settings') &&
 
             <AppSidebar />
             }
-            <AppContent variant={pathNames == "dashboard" ?  "sidebar" : "header"} className="overflow-x-hidden">
-            {pathNames == "dashboard" && 
+            <AppContent variant={(pathNames === 'dashboard' || pathNames === 'settings') ?  "sidebar" : "header"} className="overflow-x-hidden">
+            {(pathNames === 'dashboard' || pathNames === 'settings') && 
                 <AppSidebarHeader />
             }
               

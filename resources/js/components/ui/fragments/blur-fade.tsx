@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import {
   AnimatePresence,
   motion,
@@ -71,7 +72,7 @@ export function BlurFade({
           duration,
           ease: "easeOut",
         }}
-        className={className}
+        className={cn(``,className)}
         {...props}
       >
         {children}

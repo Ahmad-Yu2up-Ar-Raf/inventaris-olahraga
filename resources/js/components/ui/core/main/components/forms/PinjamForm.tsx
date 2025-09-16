@@ -47,6 +47,7 @@ import {
 import {
   Calendar as CalendarIcon
 } from "lucide-react"
+import { BlurFade } from "@/components/ui/fragments/blur-fade"
 
 
 
@@ -68,7 +69,8 @@ export default function PinjamForm<T extends FieldValues, >({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(props.onSubmit)} className="space-y-8 max-w-3xl mx-auto py-10">
-        
+          <BlurFade delay={0.25 *3 } inView>
+
         <FormField
            control={form.control}
                       name={"nama" as FieldPath<T>}
@@ -87,7 +89,8 @@ export default function PinjamForm<T extends FieldValues, >({
             </FormItem>
           )}
         />
-        <div className="  grid md:grid-cols-2  gap-7">
+          </BlurFade>
+        <BlurFade delay={0.25  *  4} inView  className="  grid md:grid-cols-2  gap-7">
 
       <FormField
      control={form.control}
@@ -169,7 +172,9 @@ export default function PinjamForm<T extends FieldValues, >({
       )}
     />
         
-        </div>
+        </BlurFade>
+        <BlurFade delay={0.25 *5 } inView>
+
         <FormField
            control={form.control}
                       name={"jumlah_pinjaman" as FieldPath<T>}
@@ -189,6 +194,7 @@ export default function PinjamForm<T extends FieldValues, >({
             </FormItem>
           )}
         />
+        </BlurFade>
  {props.children}
       </form>
     </Form>

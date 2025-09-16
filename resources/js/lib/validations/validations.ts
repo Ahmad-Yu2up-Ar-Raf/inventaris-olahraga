@@ -18,7 +18,6 @@ const imageSchema = z.union([
         message: "Only JPEG, PNG, SVG, and GIF files are allowed",
       }
     ),
-  // String untuk existing image path
   z.string().min(1, "Picture is required"),
 ])
 
@@ -39,19 +38,37 @@ export const FileWithPreview = z.object({
 
 
 
+export const pinjamanSchemas = z.object({
+  id: z.number().optional(),
+  barang_id: z.number().min(1),
+  nama: z.string().min(4, "Name is required"),
+  tanggal_dipinjam: z.coerce.date(),
+  tanggal_dikembalikan: z.coerce.date(),
+
+
+jumlah_pinjaman: z.coerce.number().min(1, "Harga is required"),
+status: z.enum(StatusPinjamanValue).optional(),
+
+created_at: z.coerce.date().optional(),
+updated_at: z.coerce.date().optional(),
+
+
+});
+
+
 export const barangSchema = z.object({
     id: z.number().optional(),
   nama: z.string().min(4, "Name is required"),
   gambar: imageSchema,
   deskripsi: z.string().optional(),
   quantity: z.coerce.number().min(2, "Harga is required"),
-
+  
   visibility: z.enum(visibilityValue).optional(),
 
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
 
-
+   pinjaman: pinjamanSchemas.array().optional(),
    status: z.enum(StatusBarangValue).optional(),
 
 

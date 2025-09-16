@@ -68,6 +68,7 @@ type componentsProps = {
 
 
 export function PinjamanDataTable({Pinjaman, filters , className, PaginatedData}: componentsProps) {
+ 
 const [selectedIds, setSelectedIds] = React.useState<(number )[]>([]);
   const [open, setOpen] = React.useState(false);
      const currentPath = window.location.pathname;

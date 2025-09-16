@@ -1,112 +1,175 @@
-import { cn } from "@/lib/utils"
-import { Link } from "@inertiajs/react"
-import React from "react"
-import { Button } from "../../fragments/button"
-import { Menu, X } from "lucide-react"
-import { Logo } from "../main/section/hero"
+"use client";
+import React, { useState } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useMotionValueEvent,
+} from "motion/react";
+import { cn } from "@/lib/utils";
+import { HoveredLink, Menu, MenuItem, ProductItem } from "@/components/ui/fragments/Navbar";
+import { Link } from "@inertiajs/react";
+import { useAppearance } from "@/hooks/use-appearance";
+import { ModeToggle } from "../../fragments/mode-toggle";
+import { Button } from "../../fragments/button";
+import { ArrowLeft } from "lucide-react";
+const navItemss = [
+    {
+      name: "Home",
+      link: "/",
+ 
+    },
+    {
+      name: "About",
+      link: "/about",
+     
+    },
+    {
+      name: "Contact",
+      link: "/contact",
+  
+    },
+  ];
+export const SiteHeader = ({
+  navItems = navItemss,
+  className,
+  paths
+}: {
+  navItems?: {
+    name: string;
+    link: string;
+    
+  }[];
+  paths: string
+  className?: string;
+}) => {
 
-const menuItems = [
-    { name: 'Features', href: '#link' },
-    { name: 'Solution', href: '#link' },
-    { name: 'Pricing', href: '#link' },
-    { name: 'About', href: '#link' },
-]
+    const { scrollYProgress } = useScroll();
+    const [visible, setVisible] = useState(true);
+    const [delay, setDelay] = useState(true);
 
-export default function  SiteHeader() {
-    const [menuState, setMenuState] = React.useState(false)
-    const [isScrolled, setIsScrolled] = React.useState(false)
-
-    React.useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50)
+    useMotionValueEvent(scrollYProgress, "change", (current) => {
+      // Check if current is not undefined and is a number
+      if (typeof current === "number") {
+        const direction = current! - scrollYProgress.getPrevious()!;
+      setDelay(false);
+  
+      if (scrollYProgress.get() > 0.05) {
+        setVisible(false);
+      } else {
+        if (direction < 0) {
+          setVisible(true);
+        } else {
+          setVisible(false);
         }
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
+      }
+        
+      }
+    });
 
-    return (
-        <header>
-            <nav
-                data-state={menuState && 'active'}
-                className="fixed group z-20 w-full px-2">
-                <div className={cn('mx-auto mt-2 max-w-6xl px-6 transition-all duration-300 lg:px-12', isScrolled && 'bg-background/50 max-w-4xl rounded-2xl border backdrop-blur-lg lg:px-5')}>
-                    <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
-                        <div className="flex w-full justify-between lg:w-auto">
-                            <Link
-                                href="/"
-                                aria-label="home"
-                                className="flex items-center space-x-2">
-                                <Logo/>
-                            </Link>
 
-                            <button
-                                onClick={() => setMenuState(!menuState)}
-                                aria-label={menuState == true ? 'Close Menu' : 'Open Menu'}
-                                className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden">
-                                <Menu className="group-data-[state=active]:rotate-180 group-data-[state=active]:scale-0 group-data-[state=active]:opacity-0 m-auto size-6 duration-200" />
-                                <X className="group-data-[state=active]:rotate-0 group-data-[state=active]:scale-100 group-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200" />
-                            </button>
-                        </div>
+    const { appearance, updateAppearance } = useAppearance();
 
-                        <div className="absolute inset-0 m-auto hidden size-fit lg:block">
-                            <ul className="flex gap-8 text-sm">
-                                {menuItems.map((item, index) => (
-                                    <li key={index}>
-                                        <Link
-                                            href={item.href}
-                                            className="text-muted-foreground hover:text-accent-foreground block duration-150">
-                                            <span>{item.name}</span>
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+  const handleThemeToggle = React.useCallback(
+    (e?: React.MouseEvent) => {
+      const newMode = appearance === 'dark' ? 'light' : 'dark';
+      const root = document.documentElement;
 
-                        <div className="bg-background group-data-[state=active]:block lg:group-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border p-6 shadow-2xl shadow-zinc-300/20 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent">
-                            <div className="lg:hidden">
-                                <ul className="space-y-6 text-base">
-                                    {menuItems.map((item, index) => (
-                                        <li key={index}>
-                                            <Link
-                                                href={item.href}
-                                                className="text-muted-foreground hover:text-accent-foreground block duration-150">
-                                                <span>{item.name}</span>
-                                            </Link>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                                <Button
-                                    asChild
-                                    variant="outline"
-                                    size="sm"
-                                    className={cn(isScrolled && 'lg:hidden')}>
-                                    <Link href="#">
-                                        <span>Login</span>
-                                    </Link>
-                                </Button>
-                                <Button
-                                    asChild
-                                    size="sm"
-                                    className={cn(isScrolled && 'lg:hidden')}>
-                                    <Link href="#">
-                                        <span>Sign Up</span>
-                                    </Link>
-                                </Button>
-                                <Button
-                                    asChild
-                                    size="sm"
-                                    className={cn(isScrolled ? 'lg:inline-flex' : 'hidden')}>
-                                    <Link href="#">
-                                        <span>Get Started</span>
-                                    </Link>
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        </header>
-    )
-}
+      if (!document.startViewTransition) {
+        updateAppearance(newMode);
+        return;
+      }
+
+      if (e) {
+        root.style.setProperty('--x', `${e.clientX}px`);
+        root.style.setProperty('--y', `${e.clientY}px`);
+      }
+
+      document.startViewTransition(() => {
+        updateAppearance(newMode);
+      });
+    },
+    [appearance, updateAppearance]
+  );
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+         initial={{
+            opacity: 1,
+            y: -100,
+          }}
+          animate={{
+            y: visible ? 0 : -100,
+            opacity: visible ? 1 : 0,
+          }}
+          transition={{
+            duration: delay ?  0.2 : 0.2,
+            delay: delay ? 2 : 0,
+          }}
+        className={cn(
+          "flex  container   sticky  top-3 lg:top-6 inset-x-0 mx-auto  rounded-full  ]  pr-2   items-center justify-between space-x-4",
+          className
+        )}
+      >
+      {paths != '/' ? (
+
+
+
+<Link href="/" className='  flex    w-fit py-2 md:flex text-base items-center gap-1 text-neutral-400 hover:text-neutral-300 group transition-colors'>
+       <ArrowLeft  className=" size-5  group-hover:-translate-x-1  group-hover:transform transition-all ease-out duration-300" />
+       <span className=''>Back </span>
+</Link>
+  ) : (
+
+        <Link href="/" className="  opacity-0  relative lg:size-15  size-10 ">
+
+          <img
+       
+       src="/favicon.svg"
+       alt="Auth-Image"
+  
+       width={500}
+       height={900}
+       
+       className="   absolute mix-blend-difference inset-0 h-full w-full object-fill object-center "
+     />
+        </Link>
+      
+  )}
+ <button className=" hover:bg-accent-foreground/5 rounded-md cursor-pointer p-3" onClick={handleThemeToggle}>
+                  <ModeToggle className=" [&_svg]:size-4  lg:[&_svg]:size-5" />
+                  <span className=" sr-only">Theme</span>
+                </button>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
+
+
+
+
+
+
+
+// function Navbar({ className }: { className?: string }) {
+//   const [active, setActive] = useState<string | null>(null);
+//   return (
+
+//       <Menu active={active} setActive={setActive}>
+//         <MenuItem setActive={setActive} active={active} item="Services">
+//           <div className="flex flex-col space-y-4 text-sm">
+//             <HoveredLink href="/">Home</HoveredLink>
+//             <HoveredLink href="/events">Events</HoveredLink>
+//             <HoveredLink href="/merchandise">Merchandise</HoveredLink>
+//             <HoveredLink href="/gallery">Gallery</HoveredLink>
+//             <HoveredLink href="/dashboard">Sign In</HoveredLink>
+
+//           </div>
+//         </MenuItem>
+  
+//       </Menu>
+
+//   );
+// }

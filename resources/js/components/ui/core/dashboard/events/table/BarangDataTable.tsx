@@ -308,8 +308,7 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
 
   if(Barangs.length == 0 && filters.search == "")
 
-
-
+  
   return(
     <>
   <EmptyState
@@ -382,6 +381,7 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
 
           <TableHead>Visibility</TableHead>
           <TableHead>Status</TableHead>
+          <TableHead>Barang Di Pinjam</TableHead>
           <TableHead>Jumlah Barang</TableHead>
           <TableHead>Di Buat Pada</TableHead>
           <TableHead>Update Terakhir</TableHead>
@@ -396,7 +396,17 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
       </TableHeader>
       <TableBody>
         {Barangs.length > 0 ?  Barangs.map((barang) =>{ 
-           
+           const totalBarang : (number | undefined)[] = barang.pinjaman.map(a => a?.jumlah_pinjaman)
+
+           function getTotal(arr:  (number | undefined)[]) {
+            let total = 0
+            for (let i = 0; i < arr.length; i++) {
+                total += arr[i]!;
+            }
+            return total
+        }
+      
+           const totalBarangPinjaman = getTotal(totalBarang)
         return(
  
           <TableRow key={barang.id}>
@@ -447,6 +457,15 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
             <span className="capitalize ">{barang.status}</span>
          
           </Badge></TableCell>
+
+          <TableCell>    
+                 <Badge variant="outline" className="py-1 [&>svg]:size-3.5">
+            <Box />
+          
+            <span className="capitalize  underline-offset-4  hover:underline font-mono">{totalBarangPinjaman }</span>
+         
+          </Badge>
+          </TableCell>
           <TableCell>    
                  <Badge variant="outline" className="py-1 [&>svg]:size-3.5">
             <Box />
@@ -455,6 +474,7 @@ const [currentBarang , setcurrentBarang ] = React.useState<(BarangsSchema) | nul
          
           </Badge>
           </TableCell>
+   
           <TableCell className="">{new Date(barang.created_at).toLocaleDateString()}</TableCell>
           <TableCell className="">{new Date(barang.updated_at).toLocaleDateString()}</TableCell>
             <TableCell className=" w-fit">

@@ -15,6 +15,33 @@ export interface NavGroup {
     items: NavItem[];
 }
 
+export interface Reports {
+    totalBarang: number
+    totalPinjaman: number
+    totalPinjamanDiterima: number
+    totalBarangDipinjam: number
+    BarangvisibilityCount:  Record<string, number>
+   
+    BarangstatusCount: Record<string, number>
+    StatusPinjamanCount: Record<string, number>
+    countsByDate: ChartDataType[]
+    [key: string]: unknown; 
+}
+
+export interface ChartDataType {
+    date: string;
+    pinjaman?: number;
+    barang?: number;
+    [key: string]: number; 
+  }
+
+export interface tabsLinktype{
+    link: string
+    name: string
+  }
+export type PageProps = {
+    reports : Reports
+ }
 
 
 export interface Filters {
@@ -24,7 +51,14 @@ export interface Filters {
     [key: string]: unknown;
 }
 
-
+export interface DataCard { 
+    title: string;
+    description: string;
+    value: number;
+    icon: LucideIcon;
+   label?: string;
+  }
+  
 
 export interface PaginatedData {
     data:  EventsSchema[];

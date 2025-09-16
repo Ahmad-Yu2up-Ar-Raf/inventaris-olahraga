@@ -1,3 +1,4 @@
+'use client'
 import { BarangsSchema } from '@/lib/validations/validations'
 import React from 'react'
 
@@ -12,11 +13,15 @@ import { Loader } from 'lucide-react';
 import useScreenSize from "@/hooks/use-screen-size"
 import MediaBetweenText from '@/components/ui/fragments/media-between-text';
 import z from 'zod';
-import { StatusBarangValue } from '@/config/enum-type';
 
-
+import {getURL} from "../../../../../../../config"
+import { BlurFade } from '@/components/ui/fragments/blur-fade';
 function Detail({ product }: {product : BarangsSchema}) {
 
+
+
+  const Domain =  "http://localhost:8000"
+ const Image = `${Domain}/${product.gambar}`
 
 const pinjamanSchema = z.object({
       // id: z.number().optional(),
@@ -38,6 +43,7 @@ const pinjamanSchema = z.object({
 
 type PinjamanSchema = z.infer<typeof pinjamanSchema>;
   const screenSize = useScreenSize()
+
       const [isPending, startTransition] = React.useTransition();
 const [loading, setLoading] = React.useState(false); 
 const form = useForm<PinjamanSchema>({
@@ -95,13 +101,13 @@ console.log(input)
   });
 }
   return (
-    <div className=' container py-5'>
-        <div className="flex gap-2 flex-col">
+    <div className=' container py-5 content-center min-h-dvh'>
+        <div className="flex  flex-col">
+        <BlurFade delay={0.25 } inView>
              <MediaBetweenText
           firstText="that's a Good ("
           secondText=") choice!"
-          mediaUrl={
-            `${product.gambar}`
+          mediaUrl={Image
           }
           mediaType="image"
           triggerType="hover"
@@ -115,12 +121,15 @@ console.log(input)
             },
           }}
         />
-              <p className="lg:text-lg text-sm max-w-xl lg:max-w-lg leading-relaxed tracking-tight text-muted-foreground  text-left">
+        </BlurFade>
+        <BlurFade delay={0.25 * 2 } inView>
+              <p className="lg:text-lg text-center text-sm max-w-xl lg:max-w-lg leading-relaxed tracking-tight text-muted-foreground   m-auto">
               Platform penyewaan alat olahraga terpercaya dengan koleksi lengkap, komunitas, maupun event olahraga.
               </p>
+              </BlurFade>
             </div>
              <PinjamForm  type="barang" isPending={loading} form={form}  onSubmit={onSubmit}>
-        <div className="gap-3 px-3 py-4 w-full flex-row justify-end  flex  border-t sm:space-x-0">
+        <BlurFade delay={0.25 * 5} inView className="gap-3 px-3 py-4 w-full flex-row justify-end  flex  border-t sm:space-x-0">
       
                             <Button  disabled={loading} type="button" className="  w-fit" size={"sm"} variant="outline">
                                   {loading && <Loader className="animate-spin" />}
@@ -131,7 +140,7 @@ console.log(input)
                             {loading && <Loader className="animate-spin" />}
                             Add
                           </Button>
-        </div>
+        </BlurFade>
           </PinjamForm>
     </div>
   )

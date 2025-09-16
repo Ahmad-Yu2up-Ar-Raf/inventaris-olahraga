@@ -5,7 +5,7 @@ import { Link, usePage } from '@inertiajs/react';
 // import Footer4Col from './site-footer';
 // import NavbarDemo from './site-header';
 // import SiteFooter from './site-footer';
-import SiteHeader from './site-header';
+import {SiteHeader }from './site-header';
 import StickyFooter from './site-footer';
 import Noise from '../../fragments/Noise';
 import { ArrowLeft } from 'lucide-react';
@@ -30,25 +30,13 @@ export function AppShell({ children, variant = 'header' }: AppShellProps) {
       
 {isAuthPage ? (
 <>
-<div className=" min-h-dvh  relative     overflow-hidden   items-center justify-center bg-gradient-to-br from-background via-muted to-background ">
-        <div className="  px-5 lg:px-10 m-auto w-full">
-          {paths != '/' && (
+<div className=" min-h-dvh  relative py-5     overflow-hidden   items-center justify-center bg-gradient-to-br from-background via-muted to-background ">
+        <div className="  relative px-3 lg:px-10 m-auto w-full">
+          <SiteHeader paths={paths}/>
+          {/* {paths != '/' && (
 
-  <nav
-        
-        //   initial={{
-        //   opacity: 1,
-        //   y: -100,
-        // }}
-      
-        className='  sticky top-0  container backdrop-blur py-3 flex items-center   '>
 
-        <Link href="/" className='  flex    w-fit py-2 md:flex text-base items-center gap-1 text-neutral-400 hover:text-neutral-300 group transition-colors'>
-               <ArrowLeft  className=" size-5  group-hover:-translate-x-1  group-hover:transform transition-all ease-out duration-300" />
-               <span className=''>Back </span>
-        </Link>
-        </nav>
-          )}
+          )} */}
       {children}
         </div>
      

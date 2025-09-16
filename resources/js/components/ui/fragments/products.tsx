@@ -11,7 +11,7 @@ import {
   MorphingDialogContainer,
 } from "./morphing-dialog";
 import { Box, ChevronRight, CircleCheck, PlusIcon } from "lucide-react";
-import { InteractiveHoverButton } from "./interactive-button";
+
 import { Button } from "./button";
 import { Link } from "@inertiajs/react";
 
@@ -97,7 +97,7 @@ function MorphingDialogBasicOne({ product} : { product: BarangsSchema}) {
                 from nickel-plated brass, aluminium and varnished wood.
               </p> */}
                 <Button className=' rounded-md w-full ' size={"lg"} >
-                    <Link href={`/barang/${product.id}`}>
+                    <Link href={`/barang/${product.id}`} className="">
                         
                     Sewa Sekarang
                     </Link>

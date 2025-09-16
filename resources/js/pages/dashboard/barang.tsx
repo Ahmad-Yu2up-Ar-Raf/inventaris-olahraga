@@ -17,6 +17,7 @@ type PageProps = {
 
 
 export default function Pages( { ...props } : PageProps) {
+  console.log(props.barang)
     return (
         < >
 
